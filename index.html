@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body> 
+    <div id="container">
+        <div>
+            <form onsubmit="return false;">
+                <label for="name-input">Summoner name</label>
+                <input type="text" name="name-input" id="name-input">
+                <input type="submit" name="name-submit" onclick="getSummoner()">
+            </form>
+        </div>
+        <div id="result">
+            <!-- match list with champion, position, augments and items  -->
+
+            <table id="data">
+                <thead>
+                    <th>Match ID</th>
+                    <th>Champion</th>
+                    <th>Teammate</th>
+                    <th>Position</th>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+    <script>
+        const KEY = "RGAPI-5046bc3c-cf2f-4fe8-a2fd-19bcbc7e4061";
+
+        function getSummoner() {
+            var fullRiotID = document.getElementById("name-input").value;
+            
+            // Check if empty
+            if (fullRiotID == "" || fullRiotID == null) {
+                alert("Please add your Riot ID!");
+                return false;
+            }
+            
+            // Check for tagline separator
+            if (!(fullRiotID.includes("#"))) {
+                alert("No tagline detected!");
+                return false;
+            }
+            var splitRiotID = fullRiotID.split("#");
+            var gameName = splitRiotID[0];
+            var tagLine = splitRiotID[1];
+            
+            // Validate tagline
+            if (tagLine.length > 6 ) {
+                alert("Tagline too long!");
+                return false;
+            } else if (tagLine == "") {
+                alert("Tagline empty!")
+            }
+
+            const firstCall = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + gameName + "/" + tagLine + "?api_key=" + KEY;
+            
+            getData(firstCall);
+
+        }
+        // fetch data, source: https://www.freecodecamp.org/news/make-api-calls-in-javascript/ 
+        // source https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
+        async function getPuuID(Url) {   
+            const response = await fetch(Url);
+            if (!response.ok) {
+                throw new Error("getPuuID: Network response not ok")
+            }
+            const json = await response.json();
+            return json.puuid; 
+        }
+
+        async function getMatchHistory(puuID) {
+            var APICALL = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuID +"/ids?queue=1700&api_key=" + KEY;
+            const response = await fetch(APICALL);
+            if (!response.ok) {
+                throw new Error("getMatchHistory: Network response not ok")
+            }
+            const json = await response.json();
+            return json;
+        }
+
+        async function getMatchData(matchID) {
+            var APICALL = "https://europe.api.riotgames.com/lol/match/v5/matches/" + matchID + "?api_key=" + KEY;
+            const response = await fetch(APICALL);
+            if (!response.ok) {
+                throw new Error("getMatchData: Network response not ok")
+            }
+            const json = await response.json();
+            return json;
+        }
+
+        function parseMatchData(matchData, puuID) {
+            console.log(matchData);
+            // Date converted src: https://www.geeksforgeeks.org/how-to-convert-unix-timestamp-to-time-in-javascript
+            var dateOfMatch = new Date(matchData.info.gameCreation);
+            // Find the right player
+            var summonerID = -1;
+            for (summoner in matchData.info.participants) {
+                if (matchData.info.participants[summoner].puuid === puuID) {
+                    summonerID = summoner;
+                }
+                
+            }
+        }
+
+        async function getData(firstCall) {
+            try {
+                const puuID = await getPuuID(firstCall);
+                const history = await getMatchHistory(puuID);
+                const lastMatch = await getMatchData(history[0]);
+                parseMatchData(lastMatch, puuID);
+            } catch(error) {
+                console.error('Error: ', error);
+            }
+        }
+
+    </script>
+    <!--  https://developer.riotgames.com/  -->
+</body>
+</html>
