@@ -1,0 +1,27 @@
+#container {
+    max-width: 1200px;
+    margin: auto;
+}
+tr>td {
+    text-align: center;
+}
+.matchcard:hover {
+    background-color: aliceblue;
+}
+.championphoto {
+    height: 80px;
+}
+.augments {
+    min-width: 360px;
+}
+.augments>img {
+    height: 60px;
+    background-color: black;
+}
+.items {
+    min-width: 420px;
+}
+.items>img {
+    height: 60px;
+    background-color: black;
+}
