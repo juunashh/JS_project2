@@ -1,6 +1,8 @@
-const KEY = "RGAPI-a64cc103-c387-4d62-b3e4-fabf9ba7be8f";
+const KEY = "RGAPI-f2a2539e-fd5a-48a0-baff-c6660c84fbf1";
 var gameName = "";
 var tagLine = "";
+
+
 
         function getSummoner() {
             var fullRiotID = document.getElementById("name-input").value;
@@ -27,7 +29,9 @@ var tagLine = "";
             } else if (tagLine == "") {
                 alert("Tagline empty!")
             }
-         
+            // Change to the results screen
+            document.getElementById("startscreen").style.display = "none";
+            document.getElementById("result").style.display = "block";
             getData(gameName, tagLine);
 
         }
@@ -111,8 +115,14 @@ var tagLine = "";
             var newRow = document.createElement('tr');
             newRow.setAttribute('class','matchcard');
             newRow.setAttribute('id',matchID);
+            newRow.setAttribute('onclick','moreMatchInformation("'+ gameName + '", "' + matchID + '")')
             newRow.innerHTML = "<td><img class='championphoto' src='" + photo1 + "' alt='" + championName + "'></td><td><img class='championphoto' src='" + photo2 + "' alt='" + teammateChampion + "'></td><td>" + teammateName + "</td><td>" + finishPosition + "</td>"
             table.appendChild(newRow);
+
+            //var elements = document.getElementsByClassName("matchcard");
+            //for (let i = 0; i < elements.length; i++) {
+            //    elements[i].addEventListener('click', async function() {moreMatchInformation(gameName, this.id)}, false)
+            //}
         }
 
         async function getData(gameName, tagLine) {
@@ -123,7 +133,6 @@ var tagLine = "";
                     const matches = await getMatchData(history[match]);
                     parseMatchData(matches, puuID)
                 }
-                const test = await moreMatchInformation(gameName, history[3]);
             } catch(error) {
                 console.error('Error: ', error);
             }
@@ -196,12 +205,11 @@ var tagLine = "";
                 var augmentID = eval(augmentN);
                 augmentList.push(augmentID);
             }
-
             const augmentData = await getAugments(augmentList);
 
             var gameRow = document.getElementById(matchID);
-            
-            var newRow = document.createElement('td');
+            var newRow           
+            newRow = document.createElement('td');
             newRow.setAttribute('class', 'augments')
             for (i in augmentData) {
                 newRow.innerHTML += "<img src='" + augmentData[i].icon + "'>"
@@ -215,14 +223,14 @@ var tagLine = "";
                 var itemID = eval(itemN);
                 itemList.push(itemID);
             }
-            
             const itemData = await getItems(itemList);
 
-            var newRow = document.createElement('td');
-            newRow.setAttribute('class','items')
+            var newRow2 = "";
+            newRow2 = document.createElement('td');
+            newRow2.setAttribute('class','items')
             for (i in itemData) {
-                newRow.innerHTML += "<img src='" + itemData[i].icon + "'>"
+                newRow2.innerHTML += "<img src='" + itemData[i].icon + "'>"
             }
-            gameRow.appendChild(newRow);
+            gameRow.appendChild(newRow2);
         }
 

@@ -7,15 +7,18 @@
     <title>Document</title>
 </head>
 <body> 
+    <div id="startscreen">
+        <h1>League of Legends Arena Stats</h1>
+        <form onsubmit="return false;">
+            <label for="name-input">Riot ID</label>
+            <input type="text" name="name-input" id="name-input">
+            <input type="submit" name="name-submit" onclick="getSummoner()">
+        </form>
+    </div>
     <div id="container">
-        <div>
-            <form onsubmit="return false;">
-                <label for="name-input">Summoner name</label>
-                <input type="text" name="name-input" id="name-input">
-                <input type="submit" name="name-submit" onclick="getSummoner()">
-            </form>
-        </div>
         <div id="result">
+            <h2>Last 20 games</h2>
+            <p>Click for more details!</p>
             <!-- match list with champion, position, augments and items  -->
 
             <table id="data">
@@ -24,6 +27,8 @@
                     <th>Champion 2</th>
                     <th>Teammate</th>
                     <th>Position</th>
+                    <th>Augments</th>
+                    <th>Items</th>
                 </thead>
 
             </table>

@@ -5,6 +5,9 @@
 tr>td {
     text-align: center;
 }
+form {
+    text-align: center;
+}
 .matchcard:hover {
     background-color: aliceblue;
 }
@@ -24,4 +27,17 @@ tr>td {
 .items>img {
     height: 60px;
     background-color: black;
+}
+
+#result {
+    display: none;
+}
+/* https://www.w3schools.com/css/tryit.asp?filename=trycss_align_transform */
+#startscreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: auto;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
