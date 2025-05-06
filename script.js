@@ -1,4 +1,4 @@
-const KEY = "RGAPI-f2a2539e-fd5a-48a0-baff-c6660c84fbf1";
+const KEY = "RGAPI-c845e3e6-da7f-4648-ae50-8301ae09b8ba";
 var gameName = "";
 var tagLine = "";
 
@@ -68,9 +68,7 @@ var tagLine = "";
         }
 
         function parseMatchData(matchData, puuID) {
-            // IDK maybe this shouldnt be async but whatever, it makes this work
-            
-            console.log(matchData);
+            // console.log(matchData);
 
             // Find the right player
             var participantID = -1;
@@ -91,8 +89,6 @@ var tagLine = "";
                 
             // variable data from json
 
-            // Date converted src: https://www.geeksforgeeks.org/how-to-convert-unix-timestamp-to-time-in-javascript
-            var dateOfMatch = new Date(matchData.info.gameCreation);
             var matchID = matchData.metadata.matchId;
 
             var championName = matchData.info.participants[participantID].championName;
@@ -104,8 +100,6 @@ var tagLine = "";
             
             var finishPosition = matchData.info.participants[teammateID].subteamPlacement;
             
-
-
 
             // DOM handling
             var photo1 = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/" + champID + ".png";
@@ -119,10 +113,6 @@ var tagLine = "";
             newRow.innerHTML = "<td><img class='championphoto' src='" + photo1 + "' alt='" + championName + "'></td><td><img class='championphoto' src='" + photo2 + "' alt='" + teammateChampion + "'></td><td>" + teammateName + "</td><td>" + finishPosition + "</td>"
             table.appendChild(newRow);
 
-            //var elements = document.getElementsByClassName("matchcard");
-            //for (let i = 0; i < elements.length; i++) {
-            //    elements[i].addEventListener('click', async function() {moreMatchInformation(gameName, this.id)}, false)
-            //}
         }
 
         async function getData(gameName, tagLine) {
